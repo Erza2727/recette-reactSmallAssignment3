@@ -53,8 +53,12 @@ export function HomePage() {
     const q = search.trim().toLowerCase();
 
     return recipes.filter((r) => {
-      const matchesType = selectedType === "ALL" ? true : r.recipeType === selectedType;
-      const matchesSearch = q === "" ? true : r.title.toLowerCase().includes(q);
+      const matchesType =
+        selectedType.toUpperCase() === "ALL"
+          ? true
+          : r.recipeType.toLowerCase() === selectedType.toLowerCase();
+      const matchesSearch =
+        q === "" ? true : r.title.trim().toLowerCase().includes(q);
       return matchesType && matchesSearch; // inclusive with category filter
     });
   }, [recipes, selectedType, search]);
@@ -101,7 +105,9 @@ export function HomePage() {
           </div>
         </div>
 
-        <h1 style={{ color: "#FFFFFF", fontSize: 44, margin: 0, fontWeight: 500 }}>
+        <h1
+          style={{ color: "#FFFFFF", fontSize: 44, margin: 0, fontWeight: 500 }}
+        >
           Explore Recipes
         </h1>
       </header>
@@ -121,10 +127,20 @@ export function HomePage() {
             color: "#929292",
           }}
         >
-          You have <b style={{ color: "#000" }}>{filtered.length}</b> recipes to explore.
+          You have <b style={{ color: "#000" }}>{filtered.length}</b> recipes to
+          explore.
         </div>
 
-        {loading ? <Loading label="Loading recipes..." /> : null}
+        {loading && <Loading label="Loading recipes..." />}
+        {!loading && error && <ErrorMessage message={error} />}
+        {!loading && !error && filtered.length > 0 && (
+          <div> {/*recipe cards*/}</div>
+        )}
+        {!loading && !error && filtered.length === 0 && (
+          <div style={{ textAlign: "center", marginTop: 40, color: "#929292" }}>
+            No recipes found.
+          </div>
+        )}
         {error ? <ErrorMessage message={error} /> : null}
 
         {!loading && !error ? (
