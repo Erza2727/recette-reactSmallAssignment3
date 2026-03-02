@@ -61,7 +61,8 @@ export function RecipeDetailsPage() {
       <div style={{ height: 520, background: "#EDECF1" }}>
         {recipe.imageUrl ? (
           <img
-            src={recipe.imageUrl}
+            src={`data:image/png;base64,${recipe.imageUrl}`}
+            //src={recipe.imageUrl}
             alt={recipe.title}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
@@ -75,7 +76,14 @@ export function RecipeDetailsPage() {
         </div>
 
         {/* Only Calories + TotalMinutes */}
-        <div style={{ display: "flex", gap: 16, marginBottom: 28, flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            marginBottom: 28,
+            flexWrap: "wrap",
+          }}
+        >
           <InfoBox label="Calories" value={`${recipe.calories} cal`} />
           <InfoBox label="Total time" value={`${recipe.totalMinutes} min`} />
         </div>
@@ -87,7 +95,14 @@ export function RecipeDetailsPage() {
         </Section>
 
         <Section title="Ingredients">
-          <ul style={{ margin: 0, paddingLeft: 18, color: "#929292", lineHeight: 1.8 }}>
+          <ul
+            style={{
+              margin: 0,
+              paddingLeft: 18,
+              color: "#929292",
+              lineHeight: 1.8,
+            }}
+          >
             {recipe.ingredients.map((ing, idx) => (
               <li key={idx}>{ing}</li>
             ))}
@@ -95,7 +110,14 @@ export function RecipeDetailsPage() {
         </Section>
 
         <Section title="Instructions">
-          <ol style={{ margin: 0, paddingLeft: 18, color: "#929292", lineHeight: 1.8 }}>
+          <ol
+            style={{
+              margin: 0,
+              paddingLeft: 18,
+              color: "#929292",
+              lineHeight: 1.8,
+            }}
+          >
             {recipe.instructions.map((step, idx) => (
               <li key={idx}>{step}</li>
             ))}
@@ -117,13 +139,21 @@ function InfoBox({ label, value }: { label: string; value: string }) {
         background: "#FFFFFF",
       }}
     >
-      <div style={{ color: "#929292", fontWeight: 600, marginBottom: 8 }}>{label}</div>
+      <div style={{ color: "#929292", fontWeight: 600, marginBottom: 8 }}>
+        {label}
+      </div>
       <div style={{ fontWeight: 800 }}>{value}</div>
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <section style={{ marginBottom: 26 }}>
       <h2 style={{ margin: "0 0 12px", fontSize: 28 }}>{title}</h2>
