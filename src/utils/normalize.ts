@@ -17,8 +17,19 @@ export function normalizeRecipeList(data: unknown): RecipeListItem[] {
 export function normalizeRecipeTypes(data: unknown): string[] {
   // API might return ["APPETIZERS", ...] OR {recipeTypes:[...]}
   if (Array.isArray(data)) return data.map(String);
-  if (data && typeof data === "object" && Array.isArray((data as any).recipeTypes)) {
-    return (data as any).recipeTypes.map(String);
+
+  if (
+    data &&
+    typeof data === "object" &&
+    Array.isArray((data as any).recipeTypes)
+  ) {
+    return (data as any).recipeTypes
+      .map((t: any) => {
+        if (typeof t === "string") return t;
+        if (t && typeof t === "object" && "name" in t) return String(t.name);
+        return ""; // fallback
+      })
+      .filter(Boolean); // remove any empty strings
   }
   return [];
 }
@@ -34,7 +45,9 @@ export function normalizeRecipeDetails(data: unknown): RecipeDetails {
     calories: Number(r.calories ?? r.Calories ?? 0),
     totalMinutes: Number(r.totalMinutes ?? r.TotalMinutes ?? r.totalTime ?? 0),
     ingredients: Array.isArray(r.ingredients) ? r.ingredients.map(String) : [],
-    instructions: Array.isArray(r.instructions) ? r.instructions.map(String) : [],
+    instructions: Array.isArray(r.instructions)
+      ? r.instructions.map(String)
+      : [],
     tags: Array.isArray(r.tags) ? r.tags.map((t: any) => String(t)) : [],
     recipeType: String(r.recipeType ?? r.type ?? r.category ?? ""),
   };

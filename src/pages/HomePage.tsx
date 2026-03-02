@@ -31,6 +31,13 @@ export function HomePage() {
 
         if (cancelled) return;
 
+        console.log("Raw recipe types from API:", typesRaw);
+
+        const normalizedRecipes = normalizeRecipeList(recipesRaw);
+        const normalizedTypes = normalizeRecipeTypes(typesRaw);
+
+        console.log("Normalized recipe types:", normalizedTypes);
+
         setRecipes(normalizeRecipeList(recipesRaw));
         setRecipeTypes(normalizeRecipeTypes(typesRaw));
       } catch (e) {
