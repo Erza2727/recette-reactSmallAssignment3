@@ -14,10 +14,38 @@ export function normalizeRecipeList(data: unknown): RecipeListItem[] {
   }));
 }
 
-export function normalizeRecipeTypes(data: unknown): string[] {
-  // API might return ["APPETIZERS", ...] OR {recipeTypes:[...]}
-  if (Array.isArray(data)) return data.map(String);
+// export function normalizeRecipeTypes(data: unknown): string[] {
+//   // API might return ["APPETIZERS", ...] OR {recipeTypes:[...]}
+//   if (Array.isArray(data)) return data.map(String);
 
+//   if (
+//     data &&
+//     typeof data === "object" &&
+//     Array.isArray((data as any).recipeTypes)
+//   ) {
+//     return (data as any).recipeTypes
+//       .map((t: any) => {
+//         if (typeof t === "string") return t;
+//         if (t && typeof t === "object" && "name" in t) return String(t.name);
+//         return ""; // fallback
+//       })
+//       .filter(Boolean); // remove any empty strings
+//   }
+//   return [];
+// }
+export function normalizeRecipeTypes(data: unknown): string[] {
+  // API returns array of objects or strings
+  if (Array.isArray(data)) {
+    return data
+      .map((t: any) => {
+        if (typeof t === "string") return t; // already a string
+        if (t && typeof t === "object" && "name" in t) return String(t.name); // extract name
+        return "";
+      })
+      .filter(Boolean); // remove empty strings
+  }
+
+  // API might return { recipeTypes: [...] }
   if (
     data &&
     typeof data === "object" &&
@@ -27,10 +55,11 @@ export function normalizeRecipeTypes(data: unknown): string[] {
       .map((t: any) => {
         if (typeof t === "string") return t;
         if (t && typeof t === "object" && "name" in t) return String(t.name);
-        return ""; // fallback
+        return "";
       })
-      .filter(Boolean); // remove any empty strings
+      .filter(Boolean);
   }
+
   return [];
 }
 
