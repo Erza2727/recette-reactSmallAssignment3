@@ -33,10 +33,10 @@ export function HomePage() {
 
         console.log("Raw recipe types from API:", typesRaw);
 
-        const normalizedRecipes = normalizeRecipeList(recipesRaw);
-        const normalizedTypes = normalizeRecipeTypes(typesRaw);
+        //const normalizedRecipes = normalizeRecipeList(recipesRaw);
+        //const normalizedTypes = normalizeRecipeTypes(typesRaw);
 
-        console.log("Normalized recipe types:", normalizedTypes);
+        //console.log("Normalized recipe types:", normalizedTypes);
 
         setRecipes(normalizeRecipeList(recipesRaw));
         setRecipeTypes(normalizeRecipeTypes(typesRaw));
@@ -140,9 +140,7 @@ export function HomePage() {
 
         {loading && <Loading label="Loading recipes..." />}
         {!loading && error && <ErrorMessage message={error} />}
-        {!loading && !error && filtered.length > 0 && (
-          <div> {/*recipe cards*/}</div>
-        )}
+
         {!loading && !error && filtered.length === 0 && (
           <div style={{ textAlign: "center", marginTop: 40, color: "#929292" }}>
             No recipes found.
