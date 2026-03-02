@@ -20,7 +20,7 @@ export function RecipeCard({ recipe }: { recipe: RecipeListItem }) {
         <div style={{ height: 150, background: "#EDECF1" }}>
           {recipe.imageUrl ? (
             <img
-              src={recipe.imageUrl}
+              src={`data:image/png;base64,${recipe.imageUrl}`}
               alt={recipe.title}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               loading="lazy"
